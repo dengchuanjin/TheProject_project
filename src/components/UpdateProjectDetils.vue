@@ -1,64 +1,65 @@
 <template>
   <div>
-    <x-header style="position: relative;left: 0; top: 0; z-index: 999">修改在建项目</x-header>
+    <x-header style="position: relative;left: 0; top: 0; z-index: 999" :left-options="{showBack: false}"><a
+      href="javascript:;" class="gotop" @click="goTop">&lt;返回</a>修改在建项目</x-header>
     <scroller>
 
-      <group style="padding-top: 30px;" v-for="item,index in selectBasicInformationData" :key="index">
-          <x-input title="项目名称" v-model="item.ts_ai_Name"></x-input>
-          <x-input title="项目地址" v-model="item.ts_ai_Objectives"></x-input>
-          <x-input title="项目面积(m²)" v-model="item.ts_ai_Area"></x-input>
-          <x-input title="项目工程概况" v-model="item.ts_ai_Overview"></x-input>
-          <x-input title="规划许可" v-model="item.ts_ai_PlanningClearance"></x-input>
-          <x-input title="施工许可" v-model="item.ts_ai_ConstructionPermit"></x-input>
-          <x-input title="预售许可" v-model="item.ts_ai_PreSaleLicence"></x-input>
-          <x-input title="安全施工许可" v-model="item.ts_ai_SecurityClearance"></x-input>
+      <group style="padding-top: 30px;">
+          <x-input title="项目名称" v-model="updateProjectObj.ts_ai_Name"></x-input>
+          <x-textarea title="项目地址" v-model="updateProjectObj.ts_ai_Objectives"></x-textarea>
+          <x-input title="项目面积(m²)" v-model="updateProjectObj.ts_ai_Area"></x-input>
+          <x-textarea title="项目工程概况" v-model="updateProjectObj.ts_ai_Overview"></x-textarea>
+          <x-input title="规划许可" v-model="updateProjectObj.ts_ai_PlanningClearance"></x-input>
+          <x-input title="施工许可" v-model="updateProjectObj.ts_ai_ConstructionPermit"></x-input>
+          <x-input title="预售许可" v-model="updateProjectObj.ts_ai_PreSaleLicence"></x-input>
+          <x-input title="安全施工许可" v-model="updateProjectObj.ts_ai_SecurityClearance"></x-input>
           <calendar
             :readonly="readonly"
-            v-model="item.ts_ai_StartTime"
+            v-model="updateProjectObj.ts_ai_StartTime"
             title="项目开始时间"
             placeholder="选择时间"
           ></calendar>
           <calendar
             :readonly="readonly"
-            v-model="item.ts_ai_Conclusion"
+            v-model="updateProjectObj.ts_ai_Conclusion"
             title="项目完工时间"
             placeholder="选择时间"
           ></calendar>
-          <x-input title="施工大队负责人" v-model="item.ts_ai_BrigadeResponsible"></x-input>
-          <x-input title="施工中队负责人" v-model="item.ts_ai_SquadronResponsible"></x-input>
-          <x-input title="监管负责人" v-model="item.ts_ai_RegulationResponsible"></x-input>
-          <x-input title="勘察单位" v-model="item.ts_ai_SurveyUnit"></x-input>
-          <x-input title="勘察法人代表" v-model="item.ts_ai_SurveyRepresentative"></x-input>
-          <x-input title="勘察法人代表电话" v-model="item.ts_ai_SurveyTelephone"></x-input>
-          <x-input title="设计单位" v-model="item.ts_ai_DesignUnit"></x-input>
-          <x-input title="设计法人代表" v-model="item.ts_ai_DesignRepresentative"></x-input>
-          <x-input title="设计负责人电话" v-model="item.ts_ai_DesignTelephone"></x-input>
-          <x-input title="建设单位" v-model="item.ts_ai_ConstructionUnit"></x-input>
-          <x-input title="建设单位法人代表" v-model="item.ts_ai_ConstructionRepresentative"></x-input>
-          <x-input title="建设单位负责人电话" v-model="item.ts_ai_ConstructionTelephone"></x-input>
-          <x-input title="现场负责人" v-model="item.ts_ai_FieldResponsibility"></x-input>
-          <x-input title="现场负责人电话" v-model="item.ts_ai_LiveTelephone"></x-input>
-          <x-input title="施工单位" v-model="item.ts_ai_EngineeringUnit"></x-input>
-          <x-input title="施工单位代表" v-model="item.ts_ai_EngineeringRepresentative"></x-input>
-          <x-input title="施工单位负责人电话" v-model="item.ts_ai_EngineeringTelephone"></x-input>
-          <x-input title="项目负责人" v-model="item.ts_ai_ProjectResponsibility"></x-input>
-          <x-input title="项目负责人电话" v-model="item.ts_ai_ProjectTelephone"></x-input>
-          <x-input title="技术负责人" v-model="item.ts_ai_TechnicalResponsibility"></x-input>
-          <x-input title="技术负责人电话" v-model="item.ts_ai_TechnicalTelephone"></x-input>
-          <x-input title="质量管理负责人" v-model="item.ts_ai_QualityManagement"></x-input>
-          <x-input title="安全管理负责人" v-model="item.ts_ai_SecurityManagement"></x-input>
-          <x-input title="监理单位" v-model="item.ts_ai_SupervisoryUnit"></x-input>
-          <x-input title="总监师" v-model="item.ts_ai_DirectorGeneral"></x-input>
-          <x-input title="总监师电话" v-model="item.ts_ai_DirectorGeneralTelephone"></x-input>
-          <x-input title="监理工程师" v-model="item.ts_ai_SupervisionEngineer"></x-input>
-          <x-input title="监理工程师电话" v-model="item.ts_ai_SupervisionEngineerTelephone"></x-input>
-          <x-input title="监理员" v-model="item.ts_ai_Supervisor"></x-input>
-          <x-input title="监理员电话" v-model="item.ts_ai_SupervisorTelephone"></x-input>
-          <x-input title="施工大队" v-model="item.ts_ai_ConstructionTeam"></x-input>
-          <x-input title="备注" v-model="item.ts_ai_Remarks"></x-input>
+          <x-input title="施工大队负责人" v-model="updateProjectObj.ts_ai_BrigadeResponsible"></x-input>
+          <x-input title="施工中队负责人" v-model="updateProjectObj.ts_ai_SquadronResponsible"></x-input>
+          <x-input title="监管负责人" v-model="updateProjectObj.ts_ai_RegulationResponsible"></x-input>
+          <x-input title="勘察单位" v-model="updateProjectObj.ts_ai_SurveyUnit"></x-input>
+          <x-input title="勘察法人代表" v-model="updateProjectObj.ts_ai_SurveyRepresentative"></x-input>
+          <x-input title="勘察法人代表电话" v-model="updateProjectObj.ts_ai_SurveyTelephone"></x-input>
+          <x-input title="设计单位" v-model="updateProjectObj.ts_ai_DesignUnit"></x-input>
+          <x-input title="设计法人代表" v-model="updateProjectObj.ts_ai_DesignRepresentative"></x-input>
+          <x-input title="设计负责人电话" v-model="updateProjectObj.ts_ai_DesignTelephone"></x-input>
+          <x-input title="建设单位" v-model="updateProjectObj.ts_ai_ConstructionUnit"></x-input>
+          <x-input title="建设单位法人代表" v-model="updateProjectObj.ts_ai_ConstructionRepresentative"></x-input>
+          <x-input title="建设单位负责人电话" v-model="updateProjectObj.ts_ai_ConstructionTelephone"></x-input>
+          <x-input title="现场负责人" v-model="updateProjectObj.ts_ai_FieldResponsibility"></x-input>
+          <x-input title="现场负责人电话" v-model="updateProjectObj.ts_ai_LiveTelephone"></x-input>
+          <x-input title="施工单位" v-model="updateProjectObj.ts_ai_EngineeringUnit"></x-input>
+          <x-input title="施工单位代表" v-model="updateProjectObj.ts_ai_EngineeringRepresentative"></x-input>
+          <x-input title="施工单位负责人电话" v-model="updateProjectObj.ts_ai_EngineeringTelephone"></x-input>
+          <x-input title="项目负责人" v-model="updateProjectObj.ts_ai_ProjectResponsibility"></x-input>
+          <x-input title="项目负责人电话" v-model="updateProjectObj.ts_ai_ProjectTelephone"></x-input>
+          <x-input title="技术负责人" v-model="updateProjectObj.ts_ai_TechnicalResponsibility"></x-input>
+          <x-input title="技术负责人电话" v-model="updateProjectObj.ts_ai_TechnicalTelephone"></x-input>
+          <x-input title="质量管理负责人" v-model="updateProjectObj.ts_ai_QualityManagement"></x-input>
+          <x-input title="安全管理负责人" v-model="updateProjectObj.ts_ai_SecurityManagement"></x-input>
+          <x-input title="监理单位" v-model="updateProjectObj.ts_ai_SupervisoryUnit"></x-input>
+          <x-input title="总监师" v-model="updateProjectObj.ts_ai_DirectorGeneral"></x-input>
+          <x-input title="总监师电话" v-model="updateProjectObj.ts_ai_DirectorGeneralTelephone"></x-input>
+          <x-input title="监理工程师" v-model="updateProjectObj.ts_ai_SupervisionEngineer"></x-input>
+          <x-input title="监理工程师电话" v-model="updateProjectObj.ts_ai_SupervisionEngineerTelephone"></x-input>
+          <x-input title="监理员" v-model="updateProjectObj.ts_ai_Supervisor"></x-input>
+          <x-input title="监理员电话" v-model="updateProjectObj.ts_ai_SupervisorTelephone"></x-input>
+          <x-input title="施工大队" v-model="updateProjectObj.ts_ai_ConstructionTeam"></x-input>
+          <x-textarea title="备注" v-model="updateProjectObj.ts_ai_Remarks"></x-textarea>
         </group>
       <!--提交按钮-->
-      <box gap="10px 10px">
+      <box gap="10px 10px" style="padding-bottom: 80px;">
         <x-button :gradients="['#0799F4', '#0000ff']" :show-loading="isUpdateLoading" @click.native="updateSubmit">提交
         </x-button>
       </box>
@@ -75,11 +76,11 @@
 </template>
 <script>
   import {mapGetters} from 'vuex'
-  import {XInput, Group, XHeader, Calendar, XButton, Box, Toast, InlineLoading} from 'vux'
+  import {XInput, Group, XHeader, Calendar, XButton, Box, Toast, InlineLoading, XTextarea} from 'vux'
 
   export default {
     computed: mapGetters([
-      'selectBasicInformationData'
+      'updateProjectObj'
     ]),
     components: {
       XInput,
@@ -89,7 +90,8 @@
       XButton,
       Box,
       Toast,
-      InlineLoading
+      InlineLoading,
+      XTextarea
     },
     data() {
       return {
@@ -101,26 +103,12 @@
       }
     },
     methods: {
-      //初始化数据
-      initData() {
-        var selectBasicInformation = {
-          "loginUserID": "huileyou",
-          "loginUserPass": "123",
-          "ts_ai_Id": JSON.parse(sessionStorage.getItem('ItemId'))
-        }
-        this.$store.dispatch('initSelectBasicInformation', selectBasicInformation)
-          .then(() => {
-          }, err => {
-            this.showError = true;
-            this.showErrorContent = err;
-          })
-      },
 //      修改提交
       updateSubmit() {
         let updateBasicInformation = {
           "loginUserID": "huileyou",
           "loginUserPass": "123",
-          "data": this.selectBasicInformationData[0]
+          "data": this.updateProjectObj
         }
         this.$store.dispatch('updateSubmit', updateBasicInformation)
           .then(() => {
@@ -130,21 +118,19 @@
             this.showErrorContent = err;
             this.showError = true;
           })
+      },
+      //返回上一层
+      goTop(){
+        this.$router.push({name:'ProjectSituationDetails'})
       }
     },
     mounted(){
-      if( this.selectBasicInformationData[0] ){
-        this.showLoading = false;
-      }
-    },
-    updated(){
-      if( this.selectBasicInformationData[0] ){
+      if( this.updateProjectObj ){
         this.showLoading = false;
       }
     },
     created() {
       this.showLoading = true;
-      this.initData();
     }
   }
 </script>
@@ -164,5 +150,12 @@
     top:50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+  }
+  .gotop {
+    position: absolute;
+    left:10px;
+    top: 5px;
+    color: #fff;
+    font-size: 16px;
   }
 </style>

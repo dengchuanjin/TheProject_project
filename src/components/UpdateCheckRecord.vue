@@ -2,16 +2,16 @@
   <div>
     <x-header style="position: relative;left: 0; top: 0; z-index: 999">修改检查基本情况</x-header>
     <scroller>
-      <group style="padding-top: 30px;">
+      <group style="padding-top: 30px;  padding-bottom: 30px;">
         <cell title="检查项目编号" :value="checkRecordDetailsObj.ts_ai_Id"></cell>
-        <x-input title="项目id" v-model="checkRecordDetailsObj.ts_ai_Item" placeholder="请输入"></x-input>
+        <cell title="项目id" :value="checkRecordDetailsObj.ts_ai_Item"></cell>
         <calendar
           :readonly="readonly"
           v-model="checkRecordDetailsObj.ts_ai_InspectionTime"
           title="检查时间"
           placeholder="选择时间"
         ></calendar>
-        <x-input title="现场情况" v-model="checkRecordDetailsObj.ts_ai_Status" placeholder="请输入"></x-input>
+        <x-textarea title="现场情况" v-model="checkRecordDetailsObj.ts_ai_Status" placeholder="请输入"></x-textarea>
         <x-input title="工程进度" v-model="checkRecordDetailsObj.ts_ai_ProjectPro" placeholder="请输入"></x-input>
         <x-input title="处理情况" v-model="checkRecordDetailsObj.ts_ai_ProcessingStatus" placeholder="请输入"></x-input>
         <x-input title="检查人员签字" v-model="checkRecordDetailsObj.ts_ai_Inspector" placeholder="请输入"></x-input>
@@ -19,7 +19,7 @@
         <x-input title="监理单位负责人名字" v-model="checkRecordDetailsObj.ts_ai_Supervision" placeholder="请输入"></x-input>
         <x-input title="施工单位负责人名字" v-model="checkRecordDetailsObj.ts_ai_Engineering" placeholder="请输入"></x-input>
       </group>
-      <box gap="10px 10px" style="padding-bottom: 20px;">
+      <box gap="10px 10px" style="padding-bottom: 80px;">
         <x-button type="primary" :show-loading="isShowLoading" @click.native="updateCheckRecordSubmit">提交</x-button>
       </box>
     </scroller>
@@ -36,7 +36,7 @@
 </template>
 <script>
   import {mapGetters} from 'vuex'
-  import {XHeader, Group, Cell, XInput, Calendar, Box, XButton, Toast, InlineLoading} from 'vux'
+  import {XHeader, Group, Cell, XInput, Calendar, Box, XButton, Toast, InlineLoading, XTextarea} from 'vux'
 
   export default {
     computed: mapGetters([
@@ -51,7 +51,8 @@
       Box,
       XButton,
       Toast,
-      InlineLoading
+      InlineLoading,
+      XTextarea
     },
     data() {
       return {
@@ -85,7 +86,7 @@
       }
     },
     updated() {
-      if (this.selectBasicInformationData[0]) {
+      if (this.checkRecordDetailsObj) {
         this.showLoading = false;
       }
     },

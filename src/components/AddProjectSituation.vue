@@ -1,12 +1,14 @@
 <template>
   <div>
-    <x-header style="position: relative;left: 0; top: 0; z-index: 999">在建项目列表</x-header>
+    <x-header style="position: relative;left: 0; top: 0; z-index: 999" :left-options="{showBack: false}"><a
+      href="javascript:;" class="gotop" @click="goTop">&lt;返回</a>添加在建项目</x-header>
     <scroller>
       <group style="padding-top: 40px;">
+        <cell title="施工大队" :value="insertBasicInformation.data.ts_ai_ConstructionTeam"></cell>
         <x-input title="项目名称" v-model="insertBasicInformation.data.ts_ai_Name" placeholder="输入项目名称"></x-input>
-        <x-input title="项目地址" v-model="insertBasicInformation.data.ts_ai_Objectives" placeholder="输入项目地址"></x-input>
+        <x-textarea title="项目地址" v-model="insertBasicInformation.data.ts_ai_Objectives" placeholder="输入项目地址"></x-textarea>
         <x-input title="项目面积(m²)" v-model="insertBasicInformation.data.ts_ai_Area" placeholder="输入项目面积"></x-input>
-        <x-input title="项目工程概况" v-model="insertBasicInformation.data.ts_ai_Overview" placeholder="输入项目工程概况"></x-input>
+        <x-textarea title="项目工程概况" v-model="insertBasicInformation.data.ts_ai_Overview" placeholder="输入项目工程概况"></x-textarea>
         <x-input title="规划许可" v-model="insertBasicInformation.data.ts_ai_PlanningClearance"
                  placeholder="输入规划许可"></x-input>
         <x-input title="施工许可" v-model="insertBasicInformation.data.ts_ai_ConstructionPermit"
@@ -79,14 +81,12 @@
                  placeholder="输入监理工程师"></x-input>
         <x-input title="监理工程师电话" v-model="insertBasicInformation.data.ts_ai_SupervisionEngineerTelephone"
                  placeholder="输入监理工程师电话"></x-input>
-        <x-input title="监理员" v-model="insertBasicInformation.data.ts_ai_Supervisor" placeholder="输入监理工程师电话"></x-input>
+        <x-input title="监理员" v-model="insertBasicInformation.data.ts_ai_Supervisor" placeholder="输入监理员"></x-input>
         <x-input title="监理员电话" v-model="insertBasicInformation.data.ts_ai_SupervisorTelephone"
-                 placeholder="输入监理员"></x-input>
-        <x-input title="施工大队" v-model="insertBasicInformation.data.ts_ai_ConstructionTeam"
-                 placeholder="输入施工大队"></x-input>
-        <x-input title="备注" v-model="insertBasicInformation.data.ts_ai_Remarks" placeholder="输入备注"></x-input>
+                 placeholder="输入监理员电话"></x-input>
+        <x-textarea title="备注" v-model="insertBasicInformation.data.ts_ai_Remarks" placeholder="输入备注"></x-textarea>
       </group>
-      <box gap="10px 10px">
+      <box gap="10px 10px" style="padding-bottom: 80px;">
         <x-button type="primary" :show-loading="isShowLoading" @click.native="addSubmit">提交</x-button>
       </box>
     </scroller>
@@ -96,7 +96,7 @@
 </template>
 <script>
   import {mapGetters} from 'vuex'
-  import {XInput, Group, Box, XButton, XHeader, Toast, Calendar} from 'vux'
+  import {XInput, Group, Box, XButton, XHeader, Toast, Calendar, Cell, XTextarea} from 'vux'
 
   export default {
     computed: mapGetters([]),
@@ -107,7 +107,9 @@
       XButton,
       XHeader,
       Toast,
-      Calendar
+      Calendar,
+      Cell,
+      XTextarea
     },
     data() {
       return {
@@ -179,9 +181,23 @@
             this.showErrorContent = err;
             this.showError = true;
           })
+      },
+      //返回上一层
+      goTop(){
+        this.$router.push({name:'CurrentTeamProject'})
       }
+    },
+    created(){
+      this.insertBasicInformation.data.ts_ai_ConstructionTeam = JSON.parse(sessionStorage.getItem('TeamName'))
     }
   }
 </script>
 <style scoped>
+  .gotop {
+    position: absolute;
+    left:10px;
+    top: 5px;
+    color: #fff;
+    font-size: 16px;
+  }
 </style>

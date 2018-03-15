@@ -1,13 +1,8 @@
 <template>
   <div>
-    <x-header
-      style="position: relative;left: 0; top: 0; z-index: 999"
-      :left-options="{showBack: false}"
-      :right-options="{showMore: true}"
-      @on-click-more="showMenus = true"
-    >在建项目列表
-
-    </x-header>
+    <x-header style="position: relative;left: 0; top: 0; z-index: 999" :left-options="{showBack: false}"><a
+      href="javascript:;" class="gotop" @click="goTop">&lt;返回</a>{{title + '在建项目列表'}}<a
+      slot="right" @click="addProjectSituation" v-show="addShow">添加</a></x-header>
     <!--数据展示-->
     <scroller>
       <group style="padding-top: 30px;  padding-bottom: 80px;">
@@ -30,28 +25,23 @@
         <span style="vertical-align:middle;display:inline-block;font-size:14px; color: #fff;">&nbsp;&nbsp;加载中</span>
       </p>
     </div>
-    <div>
-      <actionsheet :menus="menus" v-model="showMenus" show-cancel @on-click-menu="clickMenu"></actionsheet>
-    </div>
   </div>
 </template>
 <script>
   import {mapGetters} from 'vuex'
-  import {Cell, Group, Toast, XHeader, InlineLoading, Flexbox, FlexboxItem, Actionsheet} from 'vux'
+  import {Cell, Group, Toast, XHeader, InlineLoading} from 'vux'
 
   export default {
     computed: mapGetters([
       'selectBasicInformationData',
+      'changeTeamList',
     ]),
     components: {
       Cell,
       Group,
       Toast,
       XHeader,
-      InlineLoading,
-      Flexbox,
-      FlexboxItem,
-      Actionsheet
+      InlineLoading
     },
     data() {
       return {
@@ -59,28 +49,18 @@
         showError: false,
         showErrorContent: '',
         showLoading: false,
-        menus: {
-          menu1: '退出登录',
-          menu2: '修改个人资料'
-        },
-        showMenus: false,
+        isTeamList: false,
+        addShow: true,
+        title: '',
       }
     },
     methods: {
-      clickMenu(m, n) {
-        if (n == '退出登录') {
-          this.$router.push({name: 'Login'});
-        }
-        if (n == '修改个人资料') {
-          this.$router.push({name: 'UpdateInformation'});
-        }
-      },
       //初始化显示数据
       initData() {
         var selectBasicInformation = {
           "loginUserID": "huileyou",
           "loginUserPass": "123",
-          "ts_ai_ConstructionTeam": ''
+          "ts_ai_ConstructionTeam":this.title
         }
         this.$store.dispatch('initSelectBasicInformation', selectBasicInformation)
           .then(() => {
@@ -94,15 +74,35 @@
         this.$router.push({name: 'ProjectSituationDetails'})
         sessionStorage.setItem('TeamName', JSON.stringify(item.ts_ai_ConstructionTeam))
         sessionStorage.setItem('ItemId', JSON.stringify(item.ts_ai_Id))
+      },
+      //添加项目
+      addProjectSituation() {
+        this.$router.push({name: 'AddProjectSituation'})
+      },
+      //返回上一层
+      goTop(){
+        this.$router.push({name:'ProjectSituation'})
       }
     },
-    created() {
-      if (!sessionStorage.getItem('UserInfo')) {
-        this.$router.push({name: 'Login'})
+    updated(){
+      this.title = JSON.parse(sessionStorage.getItem('TeamName'));
+      if (JSON.parse(sessionStorage.getItem('UserInfo')).ts_ai_Ownership != this.title) {
+        this.addShow = false;
+      }else {
+        this.addShow = true;
       }
+
+    },
+    created() {
+      this.title = JSON.parse(sessionStorage.getItem('TeamName'))
       this.showLoading = true;
       this.UserData = JSON.parse(sessionStorage.getItem('UserInfo'));
       this.initData();
+      if (JSON.parse(sessionStorage.getItem('UserInfo')).ts_ai_Ownership == this.title) {
+        this.addShow = true;
+      }else {
+        this.addShow = false;
+      }
       this.$parent.showDetils = false;
     }
   }
@@ -131,5 +131,11 @@
     transform: translateX(-50%) translateY(-50%);
   }
 
-
+  .gotop {
+    position: absolute;
+    left:10px;
+    top: 5px;
+    color: #fff;
+    font-size: 16px;
+  }
 </style>
