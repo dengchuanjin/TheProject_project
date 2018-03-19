@@ -130,6 +130,7 @@
       }
     },
     created() {
+      this.$parent.showDetils = false;
       this.showLoading = true;
     }
   }

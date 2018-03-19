@@ -116,18 +116,6 @@
             this.showError = true;
             this.showErrorContent = err;
           })
-        //项目检查列表
-        let selectRecords = {
-          "loginUserID": "huileyou",
-          "loginUserPass": "123",
-          "ts_ai_Item": JSON.parse(sessionStorage.getItem('ItemId'))?JSON.parse(sessionStorage.getItem('ItemId')):''
-        }
-        this.$store.dispatch("initSelectRecords", selectRecords)
-          .then(() => {
-          }, err => {
-            this.showError = true;
-            this.showErrorContent = err;
-          })
       },
       updateProject() {
         this.$router.push({name: 'UpdateProjectDetils'})
@@ -159,8 +147,6 @@
       onCancel() {
         this.showDelete = false;
       },
-
-
       goTop(){
         this.$router.push({name:'CurrentTeamProject'})
       }
@@ -185,7 +171,6 @@
         })[0]
       },200);
       this.$parent.showDetils = true;
-
     }
   }
 </script>

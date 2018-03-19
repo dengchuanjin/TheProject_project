@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="wrap">
     <x-header
-      style="position: relative;left: 0; top: 0; z-index: 999"
+      style="position: relative;left: 0; top: 0; z-index: 1000"
       :left-options="{showBack: false}"
       :right-options="{showMore: true}"
       @on-click-more="showMenus = true"

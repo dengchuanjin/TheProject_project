@@ -62,6 +62,18 @@
       if (JSON.parse(sessionStorage.getItem('UserInfo')).ts_ai_Ownership != JSON.parse(sessionStorage.getItem('TeamName'))) {
         this.functionShow = false;
       }
+      //项目检查列表
+      let selectRecords = {
+        "loginUserID": "huileyou",
+        "loginUserPass": "123",
+        "ts_ai_Item": JSON.parse(sessionStorage.getItem('ItemId'))?JSON.parse(sessionStorage.getItem('ItemId')):''
+      }
+      this.$store.dispatch("initSelectRecords", selectRecords)
+        .then(() => {
+        }, err => {
+          this.showError = true;
+          this.showErrorContent = err;
+        })
     }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <x-header style="position: relative;left: 0; top: 0; z-index: 999" :left-options="{showBack: false}"><a
-      href="javascript:;" class="gotop" @click="goTop">&lt;返回</a>在建项目详情
+      href="javascript:;" class="gotop" @click="goTop">&lt;返回</a>在建项目检查表详情
       <a slot="right"
          @click="updateCheck" v-show="functionShow">修改</a><a
         slot="right" @click="deleteCheck" v-show="functionShow">删除</a>
@@ -18,6 +18,7 @@
         <cell title="建设单位负责人签字" primary="content" :value="checkRecordDetailsObj.ts_ai_Construction"></cell>
         <cell title="监理单位负责人签字" primary="content" :value="checkRecordDetailsObj.ts_ai_Supervision"></cell>
         <cell title="施工单位负责人签字" primary="content" :value="checkRecordDetailsObj.ts_ai_Engineering"></cell>
+        <img v-for="item,index in imgArr" :src="item" :key="index" width="100%" style="margin-top: 20px;">
       </group>
     </scroller>
     <toast v-model="showError" type="warn" :text="showErrorContent"></toast>
@@ -62,6 +63,7 @@
         showDelete: false,
         showLoading: false,
         functionShow: true,
+        imgArr: [],
       }
     },
     methods: {
@@ -93,8 +95,8 @@
 
       },
       //返回上一层
-      goTop(){
-        this.$router.push({name:'InspectProject'})
+      goTop() {
+        this.$router.push({name: 'InspectProject'})
       }
     },
     updated() {
@@ -103,6 +105,9 @@
       }
     },
     created() {
+      if (this.checkRecordDetailsObj.ts_ai_Picture != null) {
+        this.imgArr = this.checkRecordDetailsObj.ts_ai_Picture.split(',');
+      }
       this.showLoading = true;
       if (JSON.parse(sessionStorage.getItem('UserInfo')).ts_ai_Ownership != JSON.parse(sessionStorage.getItem('TeamName'))) {
         this.functionShow = false;
@@ -127,9 +132,10 @@
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
   }
+
   .gotop {
     position: absolute;
-    left:10px;
+    left: 10px;
     top: 5px;
     color: #fff;
     font-size: 16px;

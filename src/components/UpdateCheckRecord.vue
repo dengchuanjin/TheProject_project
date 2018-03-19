@@ -2,7 +2,7 @@
   <div>
     <x-header style="position: relative;left: 0; top: 0; z-index: 999">修改检查基本情况</x-header>
     <scroller>
-      <group style="padding-top: 30px;  padding-bottom: 30px;">
+      <group style="padding-top: 30px;">
         <cell title="检查项目编号" :value="checkRecordDetailsObj.ts_ai_Id"></cell>
         <cell title="项目id" :value="checkRecordDetailsObj.ts_ai_Item"></cell>
         <calendar
@@ -18,6 +18,17 @@
         <x-input title="建设单位负责人名字" v-model="checkRecordDetailsObj.ts_ai_Construction" placeholder="请输入"></x-input>
         <x-input title="监理单位负责人名字" v-model="checkRecordDetailsObj.ts_ai_Supervision" placeholder="请输入"></x-input>
         <x-input title="施工单位负责人名字" v-model="checkRecordDetailsObj.ts_ai_Engineering" placeholder="请输入"></x-input>
+        <a href="javascript:;" class="file">上传图片
+          <input type="file" name="" ref="upload" accept="image/*" multiple>
+        </a>
+        <img
+          style="display: block; margin-top: 10px;"
+          v-for="item in ImageURL"
+          width="100%"
+          :src="item"
+          v-show="ImageURL.length"
+        />
+        <img v-for="item,index in imgArr" :src="item" :key="index" width="100%" style="margin-top: 20px;">
       </group>
       <box gap="10px 10px" style="padding-bottom: 80px;">
         <x-button type="primary" :show-loading="isShowLoading" @click.native="updateCheckRecordSubmit">提交</x-button>
@@ -61,10 +72,55 @@
         showError: false,
         showErrorContent: '',
         showLoading: false,
+        imgArr: [],
+        ImageURL: [],
       }
     },
     methods: {
+      //图片转二进制
+      uploadImg(file) {
+        return new Promise(function (relove, reject) {
+          lrz(file)
+            .then(data => {
+              relove(data.base64.split(',')[1])
+            })
+        })
+      },
+      //添加图片
+      uploaNode() {
+        setTimeout(() => {
+          if (this.$refs.upload) {
+            this.$refs.upload.addEventListener('change', data => {
+              for (var i = 0; i < this.$refs.upload.files.length; i++) {
+                this.uploadImg(this.$refs.upload.files[i])
+                  .then(data => {
+                    this.$store.dispatch('uploadAdminImgs', {
+                      imageData: data
+                    })
+                      .then(data => {
+                        if (data) {
+                          this.ImageURL.push(data.data);
+                          if(this.ImageURL != ''){
+                            this.imgArr = '';
+                          }
+                        } else {
+                          this.$notify({
+                            message: '图片地址不存在!',
+                            type: 'error'
+                          });
+                        }
+                      })
+                  })
+              }
+            })
+          }
+        }, 30)
+      },
+      //修改提交
       updateCheckRecordSubmit() {
+        if( this.ImageURL != '' ){
+          this.checkRecordDetailsObj.ts_ai_Picture = this.ImageURL.join(',');
+        }
         var updateRecords = {
           "loginUserID": "huileyou",
           "loginUserPass": "123",
@@ -91,6 +147,8 @@
       }
     },
     created() {
+      this.uploaNode();
+      this.imgArr = this.checkRecordDetailsObj.ts_ai_Picture.split(',');
       this.showLoading = true;
     }
   }
@@ -111,5 +169,11 @@
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+  }
+
+  .file {
+    display: block;
+    color: #000;
+    padding: 20px 0;
   }
 </style>

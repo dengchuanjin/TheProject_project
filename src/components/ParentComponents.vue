@@ -120,6 +120,10 @@
     width: 50%;
     max-height: 100px;
     overflow: auto;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
   }
 
   .teamList li {

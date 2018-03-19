@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="wrap">
-      <h1>城建工程执法管理系统</h1>
+      <h1>在建工程执法管理系统</h1>
       <input type="text" class="loginNum" placeholder="请输入账号" v-model="accountValue">
       <input type="password" class="loginPassword" placeholder="请输入密码" v-model="passworldValue">
       <button class="loginSumit" @click="loginSubmit">登录</button>
